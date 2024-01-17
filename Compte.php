@@ -25,6 +25,37 @@
             public function setTitulaire(Titulaire $titulaire) {return $this->titulaire = $titulaire;}
 
            
+            public function crediterCompte($montant){
+                $this->soldeInitial += $montant;
+            }
+
+            public function debiterCompte($montant){
+                if($this->soldeInitial >= $montant){
+                    $this->soldeInitial -= $montant;
+                }else {
+                    echo "Solde insuffisant";
+                }
+            }
+
+            
+            public function effectuerVirement($compteDestinataire, $montant) {
+                echo "<ul>";
+                if ($this->soldeInitial >= $montant) {
+                    $this->soldeInitial -= $montant;
+                    $compteDestinataire->crediterCompte($montant);
+                    echo "<li><b>Montant virement : " . $montant . " €</b></li>";
+                }else{
+                    echo "<li><b>Dernier virement : Solde insuffisant</b></li>";
+                }
+                echo "</ul>";
+            }
+
+            public function afficherInfosCompte(){
+                echo "<h1>Titulaire du compte : " . $this->titulaire->getnom() . " " . $this->titulaire->getPrenom() . "</h1><br>";
+                echo "<ul>";
+                echo "<li><b>Compte bancaire : $this </b></li><br>";
+                echo "</ul>";
+                }
 
             public function __toString(){
                 return $this->libelle . " " . $this->soldeInitial . " " . $this->devise;
